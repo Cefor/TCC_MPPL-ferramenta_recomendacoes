@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interesses do Parlamentar</title>
+    {{ bootstrap.load_css() }}
+</head>
+<body>
+    <div class="container-fluid content">
+
+        <!-- Incluir Cabeçalho -->
+        {% include 'header.html' %}
+
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('pagina_detalhes', id=senador['CodigoParlamentar']) }}">Início</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Preferências</li>
+            </ol>
+        </nav>
+
+        <!-- Meus Interesses -->
+        <div class="my-4">
+            <h2 class="mb-3">Preferências</h2>
+            <p class="text.text-white"><small>Aqui serão listadas as matérias que foram marcadas como "Gostei" ou "Não gostei"</small></p>
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+                {% if preferencias %}
+                {% for sugestao in preferencias %}     
+                               
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                 <a href="{{ url_for('pagina_detalhes_materias', id=senador['CodigoParlamentar'], codigo_materia = sugestao['CodigoMateria']) }}" class="btn btn-primary">
+                                    <h5 class="card-title">{{ sugestao['Identificacao'] }}</h5></a>
+                                    <!-- Botões de Gostei e Não Gostei-->
+                                    <button class="btn btn-success thumbs-up"                                
+    
+                                    data-codigo-parlamentar="{{ senador['CodigoParlamentar'] }}" 
+                                            data-codigo-materia="{{ sugestao['CodigoMateria'] }}" 
+                                            data-identificador-unico="{{ sugestao['identificador_unico'] }}">
+                                        <img src="{{ url_for('static', filename='hand-thumbs-up.svg') }}" class="thumbs">
+                                    </button>
+                                    <button class="btn btn-danger thumbs-down"
+                                            data-codigo-parlamentar="{{ senador['CodigoParlamentar'] }}" 
+                                            data-codigo-materia="{{ sugestao['CodigoMateria'] }}" 
+                                            data-identificador-unico="{{ sugestao['identificador_unico'] }}">
+                                        <img src="{{ url_for('static', filename='hand-thumbs-down.svg') }}" class="thumbs">
+                                    </button>
+                                <!-- Truncate a Ementa para, por exemplo, 100 caracteres -->
+                                <p class="card-text">{{ sugestao['Ementa'][:200] }}{{ '...' if sugestao['Ementa']|length > 200 else '' }}</p>
+                                {% if sugestao['justificativa_prioridade'] is not none %}
+                                <div class="p-1 mb-2 bg-info text-white"><strong>Oportunidade: </strong>{{ sugestao['justificativa_prioridade'] }}</div>
+                                  {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                {% else %}
+                    <p>Nenhum resultado encontrado.</p>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+    <!-- Incluir Rodapé -->
+    {% include 'footer.html' %}
+    {{ bootstrap.load_js() }}
+</body>
+</html>

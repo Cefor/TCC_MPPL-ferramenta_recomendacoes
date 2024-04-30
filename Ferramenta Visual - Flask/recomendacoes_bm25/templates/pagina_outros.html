@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interesses de outros parlamentares</title>
+    {{ bootstrap.load_css() }}
+</head>
+<body>
+    <div class="container-fluid content">
+
+        <!-- Incluir Cabeçalho -->
+        {% include 'header.html' %}
+
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('pagina_detalhes', id=senador['CodigoParlamentar']) }}">Início</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Outros interesses</li>
+            </ol>
+        </nav>
+        <center>
+        <a href="#partido" class="btn btn-primary"> Por partido </a>
+        <a href="#estado" class="btn btn-primary"> Por estado </a>
+        <a href="#populares" class="btn btn-primary"> Populares </a>
+        </center>   
+
+        <!-- Meus Interesses -->
+        <div class="my-4">
+            <h2 class="mb-3" id="partido">Atuação de outros parlamentares do seu <strong>PARTIDO</strong></h2>
+            <p class="text.text-white"><small>Aqui serão listadas as matérias em que houve mais atuação de outros parlamentares do partido e que estão ainda em tramitação.</small></p>
+            
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+                {% if interesses_partido %}
+                {% for sugestao in interesses_partido %}     
+                               
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                 <a href="{{ url_for('pagina_detalhes_materias', id=senador['CodigoParlamentar'], codigo_materia = sugestao['CodigoMateria']) }}" class="btn btn-primary">
+                                    <h5 class="card-title">{{ sugestao['Identificacao'] }}</h5></a>
+                                    <!-- Botões de Gostei e Não Gostei-->
+                                    <button class="btn btn-success thumbs-up"                                
+    
+                                    data-codigo-parlamentar="{{ senador['CodigoParlamentar'] }}" 
+                                            data-codigo-materia="{{ sugestao['CodigoMateria'] }}" 
+                                            data-identificador-unico="{{ sugestao['identificador_unico'] }}">
+                                        <img src="{{ url_for('static', filename='hand-thumbs-up.svg') }}" class="thumbs">
+                                    </button>
+                                    <button class="btn btn-danger thumbs-down"
+                                            data-codigo-parlamentar="{{ senador['CodigoParlamentar'] }}" 
+                                            data-codigo-materia="{{ sugestao['CodigoMateria'] }}" 
+                                            data-identificador-unico="{{ sugestao['identificador_unico'] }}">
+                                        <img src="{{ url_for('static', filename='hand-thumbs-down.svg') }}" class="thumbs">
+                                    </button>
+                                    <div class="alert alert-info" role="alert">
+                                        <b>Ações realizadas por <u>{{ sugestao['NomeParlamentar']}} ({{ sugestao['SiglaPartidoParlamentar']}}/{{ sugestao['UfParlamentar']}})</u> na matéria:</b> {{ sugestao['justificativa_interesse'] }}
+                                    </div>
+                                    <!-- Truncate a Ementa para, por exemplo, 100 caracteres -->
+                                <p class="card-text">{{ sugestao['Ementa'][:200] }}{{ '...' if sugestao['Ementa']|length > 200 else '' }}</p>
+                                {% if sugestao['justificativa_prioridade'] is not none %}
+                                <div class="p-1 mb-2 bg-info text-white"><strong>Oportunidade: </strong>{{ sugestao['justificativa_prioridade'] }}</div>
+                                  {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                {% else %}
+                    <p>Nenhum resultado encontrado.</p>
+                {% endif %}
+            </div>
+
+            <!-- MATÉRIAS DE OUTROS SENADORES DO ESTADO-->
+
+            <h2 class="mb-3" id="estado">Atuação de outros parlamentares do seu <strong>ESTADO</strong></h2>
+            <p class="text.text-white"><small>Aqui serão listadas as matérias em que houve mais atuação de outros parlamentares do estado e que estão ainda em tramitação.</small></p>
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+                {% if interesses_estado %}
+                {% for sugestao in interesses_estado %}     
+                               
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                 <a href="{{ url_for('pagina_detalhes_materias', id=senador['CodigoParlamentar'], codigo_materia = sugestao['CodigoMateria']) }}" class="btn btn-primary">
+                                    <h5 class="card-title">{{ sugestao['Identificacao'] }}</h5></a>
+                                    <!-- Botões de Gostei e Não Gostei-->
+                                    <button class="btn btn-success thumbs-up"                                
+    
+                                    data-codigo-parlamentar="{{ senador['CodigoParlamentar'] }}" 
+                                            data-codigo-materia="{{ sugestao['CodigoMateria'] }}" 
+                                            data-identificador-unico="{{ sugestao['identificador_unico'] }}">
+                                        <img src="{{ url_for('static', filename='hand-thumbs-up.svg') }}" class="thumbs">
+                                    </button>
+                                    <button class="btn btn-danger thumbs-down"
+                                            data-codigo-parlamentar="{{ senador['CodigoParlamentar'] }}" 
+                                            data-codigo-materia="{{ sugestao['CodigoMateria'] }}" 
+                                            data-identificador-unico="{{ sugestao['identificador_unico'] }}">
+                                        <img src="{{ url_for('static', filename='hand-thumbs-down.svg') }}" class="thumbs">
+                                    </button>
+                                    <div class="alert alert-info" role="alert">
+                                        <b>Ações realizadas por <u>{{ sugestao['NomeParlamentar']}} ({{ sugestao['SiglaPartidoParlamentar']}}/{{ sugestao['UfParlamentar']}})</u> na matéria:</b> {{ sugestao['justificativa_interesse'] }}
+                                    </div>
+                                    <!-- Truncate a Ementa para, por exemplo, 100 caracteres -->
+                                <p class="card-text">{{ sugestao['Ementa'][:200] }}{{ '...' if sugestao['Ementa']|length > 200 else '' }}</p>
+                                {% if sugestao['justificativa_prioridade'] is not none %}
+                                <div class="p-1 mb-2 bg-info text-white"><strong>Oportunidade: </strong>{{ sugestao['justificativa_prioridade'] }}</div>
+                                  {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                {% else %}
+                    <p>Nenhum resultado encontrado.</p>
+                {% endif %}
+            </div>
+
+            <!-- MATÉRIAS POPULARES-->
+
+            <h2 class="mb-3" id="populares">Matérias populares</h2>
+            <p class="text.text-white"><small>Aqui serão listadas as matérias em que houve mais atuação de outros parlamentares do estado e que estão ainda em tramitação.</small></p>
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+                {% if principais_interesses %}
+                {% for sugestao in principais_interesses %}     
+                               
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                 <a href="{{ url_for('pagina_detalhes_materias', id=senador['CodigoParlamentar'], codigo_materia = sugestao['CodigoMateria']) }}" class="btn btn-primary">
+                                    <h5 class="card-title">{{ sugestao['Identificacao'] }}</h5></a>
+                                    <!-- Botões de Gostei e Não Gostei-->
+                                    <button class="btn btn-success thumbs-up"                                
+    
+                                    data-codigo-parlamentar="{{ senador['CodigoParlamentar'] }}" 
+                                            data-codigo-materia="{{ sugestao['CodigoMateria'] }}" 
+                                            data-identificador-unico="{{ sugestao['identificador_unico'] }}">
+                                        <img src="{{ url_for('static', filename='hand-thumbs-up.svg') }}" class="thumbs">
+                                    </button>
+                                    <button class="btn btn-danger thumbs-down"
+                                            data-codigo-parlamentar="{{ senador['CodigoParlamentar'] }}" 
+                                            data-codigo-materia="{{ sugestao['CodigoMateria'] }}" 
+                                            data-identificador-unico="{{ sugestao['identificador_unico'] }}">
+                                        <img src="{{ url_for('static', filename='hand-thumbs-down.svg') }}" class="thumbs">
+                                    </button>
+                                    <div class="alert alert-info" role="alert">
+                                        <b>{{ sugestao['ContagemParlamentares']}} parlamentares atuaram nesta matéria</b>
+                                    </div>
+                                    <!-- Truncate a Ementa para, por exemplo, 100 caracteres -->
+                                <p class="card-text">{{ sugestao['Ementa'][:200] }}{{ '...' if sugestao['Ementa']|length > 200 else '' }}</p>
+                                {% if sugestao['justificativa_prioridade'] is not none %}
+                                <div class="p-1 mb-2 bg-info text-white"><strong>Oportunidade: </strong>{{ sugestao['justificativa_prioridade'] }}</div>
+                                  {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                {% else %}
+                    <p>Nenhum resultado encontrado.</p>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+    <!-- Incluir Rodapé -->
+    {% include 'footer.html' %}
+    {{ bootstrap.load_js() }}
+</body>
+</html>

@@ -1,0 +1,56 @@
+/* Arquivo: static/styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+}
+
+.title {
+    color: #333;
+}
+
+.sub-title {
+    color: #555;
+}
+
+.senadores-list, .sugestoes-list, .interesses-list, .similares-sugeridas-list {
+    list-style: none;
+    padding: 0;
+}
+
+.senadores-list li, .sugestoes-list li, .interesses-list li, .similares-sugeridas-list li {
+    margin-bottom: 10px;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px;
+    background-color: #4285f4;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.button:hover {
+    background-color: #3c78d8;
+}
+
+.card.expandido .card-body {
+    display: block;
+}
+
+.card:not(.expandido) .card-body {
+    display: none;
+}
+
+.thumbs-up.votado,
+.thumbs-down.votado {
+    display: none;
+}
+
+
+/* Adicione outros estilos conforme necessário */

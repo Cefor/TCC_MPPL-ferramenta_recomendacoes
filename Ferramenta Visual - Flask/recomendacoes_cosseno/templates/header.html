@@ -1,0 +1,169 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Detalhes do Senador</title>
+        {{ bootstrap.load_css() }}
+        <style>
+            /* Adicione estilos personalizados aqui, se necessário */
+            body {
+                background-color: #f8f9fa; /* Cor de fundo semelhante à da Amazon */
+            }
+            .navbar {
+                display: flex;
+                background-color: #232f3e; /* Cor de fundo da barra superior */
+                color: #ffffff; /* Cor do texto na barra superior */
+                padding: 5px !important;
+            }
+            .navbar-logo {
+                margin-right: 10px;
+                margin-left: 10px;
+                max-width: 100%;
+
+                @media only screen and (min-width: 768px) {
+                    max-width: 25%;
+                    width: 25%;
+                    display: flex;
+                    flex-wrap: wrap;
+                    margin: 0px;
+                }
+            }
+            
+            .search-bar{
+                width: 100%;
+                margin-right: 10px;
+                margin-left: 10px;
+
+                @media only screen and (min-width: 768px) {
+                    max-width: 50%;
+                    width: 50%;
+                    display: flex;
+                    flex-wrap: wrap;
+                    margin: 0px;
+                }
+            }
+            .user-info {
+                width: 100%;
+                text-align: center; /* Alinha as informações do usuário à direita */
+                margin-right: 10px;
+
+                @media only screen and (min-width: 768px) {
+                    max-width: 25%;
+                    width: 25%;
+                    
+                    margin: 0px;
+                }
+
+            }
+
+            .meuform{
+                width: 80%;
+                margin:auto;
+            }
+
+            .info{
+                margin: 0px;
+            }
+
+            .content {
+            margin-top: 20px; /* Adiciona um espaço entre a barra superior e o conteúdo */
+            }
+            .footer {
+                
+                text-align: center;
+                padding: 5px;
+                background-color: #232f3e; /* Cor de fundo do rodapé */
+                color: #ffffff; /* Cor do texto no rodapé */
+                margin: 10px;
+            }
+
+            .input-group-append button {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            }
+            .thumbs-up,
+            .thumbs-down {
+                opacity: 0.5;
+            }
+
+            .thumbs-up.votado,
+            .thumbs-down.votado {
+                opacity: 1;
+            }
+
+            .menu {
+                display: flex;    
+                background-color: #526882; /* Cor de fundo do menu */
+                                            
+            }
+
+            .menu a {
+                text-decoration: none; /* Remove sublinhado padrão de links */
+                color: #fff; /* Cor do texto do link */
+                padding: 8px 16px; /* Espaçamento interno do link */
+                border-radius: 5px; /* Borda arredondada */
+                transition: background-color 0.3s; /* Adiciona uma transição suave à cor de fundo */
+
+            }
+
+            .menu a:hover {
+                background-color: rgb(112, 110, 110); /* Cor de fundo ao passar o mouse */
+            }
+
+    
+
+        </style>
+        <script src="{{ url_for('static', filename='script.js') }}"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        
+    </head>
+    <body>
+    <nav class="navbar">
+        <div class="navbar-logo">
+            <a href="{{ url_for('pagina_detalhes', id=senador['CodigoParlamentar']) }}">
+            <img src="{{ url_for('static', filename='cover.png') }}" alt="Logo" class="img-fluid">
+            </a>
+        </div>
+        
+        <div class="search-bar">
+            <!-- Caixa de Pesquisa -->
+           <!-- Caixa de Pesquisa com Ícone de Lupa na Mesma Linha -->
+        <form class="form-inline meuform mt-3 mb-3" action="{{ url_for('pesquisar_similares', id=senador['CodigoParlamentar'])}}" method="get">
+            <div class="input-group">
+                <input class="form-control w-75" type="search" placeholder="Pesquisar" aria-label="Pesquisar" id="search-input" name="query">
+                
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit">
+                        <i class="fas fa-search"></i> <!-- Ícone de Lupa -->
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        
+
+        </div>
+        <div class="user-info">
+            <!-- Informações do Senador -->
+            <p class="h5 text-white info"><strong>{{ senador['NomeParlamentar'] }}</strong></p>
+            <p class="text-white info">Partido: {{ senador['SiglaPartidoParlamentar'] }}</p>
+            <p class="text-white info">Estado: {{ senador['UfParlamentar'] }}</p>            
+            <a class="nav-link" href="{{ url_for('pagina_avaliacao', id=senador['CodigoParlamentar']) }}"><button type="button" class="btn btn-success">O que achou do sistema?</button></a>
+        </div>
+
+
+        
+    </nav> 
+
+    
+
+      <div class="menu bg-dark mb-4">
+        <a href="{{ url_for('pagina_detalhes', id=senador['CodigoParlamentar']) }}">Página Inicial</a>
+        <a href="{{ url_for('pagina_interesses', id=senador['CodigoParlamentar']) }}">Atuação</a>        
+        <a href="{{ url_for('pagina_outros', id=senador['CodigoParlamentar']) }}">Outros interesses</a>
+        <a href="{{ url_for('pagina_preferencias', id=senador['CodigoParlamentar']) }}">Preferências</a>
+    </div>
+    
+    
+    </body>
+</html>

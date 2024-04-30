@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Detalhes do Senador</title>
+        {{ bootstrap.load_css() }}
+        <style>
+            /* Adicione estilos personalizados aqui, se necessário */
+            body {
+                background-color: #f8f9fa; /* Cor de fundo semelhante à da Amazon */
+            }
+            .navbar {
+                background-color: #232f3e; /* Cor de fundo da barra superior */
+                color: #ffffff; /* Cor do texto na barra superior */
+            }
+            .navbar-logo {
+                
+                max-width: 25%;
+            }
+            .navbar-search {
+            flex: 0.8; /* Reduza o tamanho da barra de pesquisa (ajuste conforme necessário) */
+            margin-right: 10px; /* Adicione uma margem direita para espaçamento */
+            }
+            .navbar-user-info {
+                max-width: 25%;
+                text-align: center; /* Alinha as informações do usuário à direita */
+                margin-right: 10px;
+            }
+
+            .content {
+            margin-top: 20px; /* Adiciona um espaço entre a barra superior e o conteúdo */
+        }
+        .footer {
+            
+            text-align: center;
+            padding: 5px;
+            background-color: #232f3e; /* Cor de fundo do rodapé */
+            color: #ffffff; /* Cor do texto no rodapé */
+            margin: 10px;
+        }
+
+        </style>
+        <script>
+            // eslint-disable-next-line
+            var senador = {{ senador | tojson | safe }};            
+         </script>        
+    </head>
+<body>
+    <div class="container-fluid content">
+
+        <!-- Incluir Cabeçalho -->
+        {% include 'header.html' %}
+        
+        
+        
+
+               
+               
+
+              
+        <!-- Sugestões de Matérias Prioritárias em Cards (4 colunas) -->
+        <h2 class="mb-3">Sugestões de matérias para o Senador {{ senador['NomeParlamentar'] }}</h2>
+        <p class="text-secondary">Sugestões geradas automaticamente por algoritmos que analisam o histórico de 
+            atuação do parlamentar e os dados das matérias em tramitação no Senado Federal.</p>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            {% for sugestao in sugestoes %}     
+                           
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                             <a href="{{ url_for('pagina_detalhes_materias', id=senador['CodigoParlamentar'], codigo_materia = sugestao['CodigoMateria']) }}" class="btn btn-primary">
+                                <h5 class="card-title">{{ sugestao['Identificacao'] }}</h5></a>
+                                <!-- Botões de Gostei e Não Gostei-->
+                                <button class="btn btn-success thumbs-up"                                
+
+                                data-codigo-parlamentar="{{ senador['CodigoParlamentar'] }}" 
+                                        data-codigo-materia="{{ sugestao['CodigoMateria'] }}" 
+                                        data-identificador-unico="{{ sugestao['identificador_unico'] }}">
+                                    <img src="{{ url_for('static', filename='hand-thumbs-up.svg') }}" class="thumbs">
+                                </button>
+                                <button class="btn btn-danger thumbs-down"
+                                        data-codigo-parlamentar="{{ senador['CodigoParlamentar'] }}" 
+                                        data-codigo-materia="{{ sugestao['CodigoMateria'] }}" 
+                                        data-identificador-unico="{{ sugestao['identificador_unico'] }}">
+                                    <img src="{{ url_for('static', filename='hand-thumbs-down.svg') }}" class="thumbs">
+                                </button>
+                            <!-- Truncate a Ementa para, por exemplo, 100 caracteres -->
+                            <p class="card-text">{{ sugestao['Ementa'][:200] }}{{ '...' if sugestao['Ementa']|length > 200 else '' }}</p>
+                            {% if sugestao['justificativa_prioridade'] is not none %}
+                            <div class="p-1 mb-2 bg-info text-white"><strong>Oportunidade: </strong>{{ sugestao['justificativa_prioridade'] }}</div>
+                              {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        
+    </div>
+
+     <!-- Incluir Rodapé -->
+     {% include 'footer.html' %}
+
+    {{ bootstrap.load_js() }}
+</body>
+</html>

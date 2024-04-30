@@ -1,0 +1,30 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Detalhes do Senador</title>
+        {{ bootstrap.load_css() }}
+        <style>
+                        
+        .footer {
+            
+            text-align: center;
+            padding: 5px;
+            background-color: #232f3e; /* Cor de fundo do rodapé */
+            color: #ffffff; /* Cor do texto no rodapé */
+            margin: 10px;
+        }
+
+        </style>        
+    </head>
+    <body>
+    <!-- Rodapé -->
+    <div class="footer">
+        <a class="nav-link" href="{{ url_for('pagina_avaliacao', id=senador['CodigoParlamentar']) }}"><button type="button" class="btn btn-success">O que achou do sistema?</button></a>
+        <a href="#"><p class="text-white">Voltar ao início</p></a>
+        <p class="text-white"><small><i>Este sistema é um dos produtos da pesquisa em andamento de Carlos Rafael 
+            no Mestrado Profissional em Poder Legislativo do CEFOR</small></i>
+        </p>
+    </div> 
+    </body>
+</html>

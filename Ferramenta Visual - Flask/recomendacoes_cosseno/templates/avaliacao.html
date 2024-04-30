@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes da Matéria</title>
+    {{ bootstrap.load_css() }}
+    <style>
+        /* Adicione estilos personalizados aqui */
+        .bordered-container {
+            border: 2px solid #ddd; /* Cor da borda */
+            border-radius: 10px; /* Borda arredondada */
+            padding: 20px; /* Espaçamento interno */
+            margin: auto; /* Centralizar na página */
+            width: 70%; /* Largura do contêiner */
+            margin-top: 50px; /* Espaçamento superior */
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid content">
+
+        <!-- Incluir Cabeçalho -->
+        {% include 'header.html' %}
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('pagina_detalhes', id=senador['CodigoParlamentar']) }}">Início</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Avaliação do sistema</li>
+            </ol>
+        </nav>
+
+        <div class="my-4">
+            <h2 class="mb-3">Avaliação do sistema</h2>
+            <p class="text.text-white"><small>Esta avaliação é anônima e será muito importante para o andamento da pesquisa e para melhorar futuramente o Sistema.</small></p>
+        </div>
+        <!-- Detalhes da Matéria -->
+        <div class="my-4 container bordered-container">
+            
+
+            <!-- Adicione a mensagem de sucesso aqui -->
+            {% if sucesso %}
+                <div class="alert alert-success" role="alert">
+                    {{ sucesso }}
+                </div>
+            {% endif %}
+
+            <form action="{{ url_for('salvar_avaliacao', id=senador['CodigoParlamentar']) }}" method="post">
+                <!-- Pergunta 1 -->
+                <div class="form-group mb-4">
+                    <label for="pergunta1" style="font-weight: bold;">As sugestões apresentadas neste sistema podem servir para a atuação do parlamentar?</label>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="p1_opcao1" name="pergunta1" class="custom-control-input" value="1">
+                        <label class="custom-control-label" for="p1_opcao1">1 - Não podem ser utilizadas</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="p1_opcao2" name="pergunta1" class="custom-control-input" value="2">
+                        <label class="custom-control-label" for="p1_opcao2">2 - Quase não há utilidade</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="p1_opcao3" name="pergunta1" class="custom-control-input" value="3">
+                        <label class="custom-control-label" for="p1_opcao3">3 - Há alguma utilidade, mas limitada</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="p1_opcao4" name="pergunta1" class="custom-control-input" value="4">
+                        <label class="custom-control-label" for="p1_opcao4">4 - Úteis na maioria das situações</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="p1_opcao5" name="pergunta1" class="custom-control-input" value="5">
+                        <label class="custom-control-label" for="p1_opcao5">5 - São totalmente úteis</label>
+                    </div>
+                    <!-- Continue para as outras opções -->
+                </div>
+
+                <!-- Pergunta 2 -->
+                <div class="form-group mb-4">
+                    <label for="pergunta2" style="font-weight: bold;">As matérias sugeridas são novas para você?</label>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="p2_opcao1" name="pergunta2" class="custom-control-input" value="1">
+                        <label class="custom-control-label" for="p2_opcao1">1 - Nenhuma é nova</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="p2_opcao2" name="pergunta2" class="custom-control-input" value="2">
+                        <label class="custom-control-label" for="p2_opcao2">2 - Algumas são novas, mas a maioria é conhecida</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="p2_opcao3" name="pergunta2" class="custom-control-input" value="3">
+                        <label class="custom-control-label" for="p2_opcao3">3 - Cerca de metade das sugestões são novas</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="p2_opcao4" name="pergunta2" class="custom-control-input" value="4">
+                        <label class="custom-control-label" for="p2_opcao4">4 - A maioria é nova</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="p2_opcao5" name="pergunta2" class="custom-control-input" value="5">
+                        <label class="custom-control-label" for="p2_opcao5">5 - Todas as matérias são novas</label>
+                    </div>
+                    <!-- Continue para as outras opções -->
+                </div>                
+                
+                <!-- Pergunta 3 -->
+                <div class="form-group mb-4">
+                    <label for="pergunta3" style="font-weight: bold;">Que percentual aproximado de esforço na busca por matérias é reduzido com a utilização do sistema?</label>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="p3_opcao1" name="pergunta3" class="custom-control-input" value="1">
+                        <label class="custom-control-label" for="p3_opcao1">1 - 0%</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="p3_opcao2" name="pergunta3" class="custom-control-input" value="2">
+                        <label class="custom-control-label" for="p3_opcao2">2 - 25%</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="p3_opcao3" name="pergunta3" class="custom-control-input" value="3">
+                        <label class="custom-control-label" for="p3_opcao3">3 - 50%</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="p3_opcao4" name="pergunta3" class="custom-control-input" value="4">
+                        <label class="custom-control-label" for="p4_opcao4">4 - 75%</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="p3_opcao5" name="pergunta3" class="custom-control-input" value="5">
+                        <label class="custom-control-label" for="p3_opcao5">5 - 100%</label>
+                    </div>
+                    <!-- Continue para as outras opções -->
+                </div>
+
+                <!-- Pergunta 4 -->
+                <div class="form-group mb-4">
+                    <label for="pergunta4" style="font-weight: bold;">Se desejar, escreva livremente o que achou do sistema</label>                    
+                    <textarea class="form-control" id="pergunta4" name="pergunta4" rows="3"></textarea>
+                </div>
+
+                <!-- Botão de Envio -->
+                <button type="submit" class="btn btn-primary">Enviar Avaliação</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Incluir Rodapé -->
+    {% include 'footer.html' %}
+    {{ bootstrap.load_js() }}
+</body>
+</html>
+
+
+
+    
+
+    <!-- <script>
+        // Atualiza os valores exibidos conforme o usuário move os controles deslizantes
+        document.getElementById("pergunta1").addEventListener("input", function () {
+            document.getElementById("valorPergunta1").innerText = this.value;
+        });
+        document.getElementById("pergunta2").addEventListener("input", function () {
+            document.getElementById("valorPergunta2").innerText = this.value;
+        });
+        document.getElementById("pergunta3").addEventListener("input", function () {
+            document.getElementById("valorPergunta3").innerText = this.value;
+        });
+
+        // Envia a avaliação para o servidor
+        function enviarAvaliacao() {
+            var formData = new FormData(document.getElementById("formAvaliacao"));
+
+            fetch("/salvar_avaliacao", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Avaliação enviada com sucesso!");
+            })
+            .catch(error => {
+                console.error("Erro ao enviar avaliação:", error);
+            });
+        }
+    </script>-->
+</body>
+</html>

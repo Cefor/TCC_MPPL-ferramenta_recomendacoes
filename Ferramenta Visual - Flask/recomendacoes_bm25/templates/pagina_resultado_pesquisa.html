@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado da Pesquisa</title>
+    {{ bootstrap.load_css() }}
+</head>
+
+<body>
+    <div class="container-fluid content">
+
+        <!-- Incluir Cabeçalho -->
+        {% include 'header.html' %}
+
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{{ url_for('pagina_detalhes', id=senador['CodigoParlamentar']) }}">Início</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Resultado da Pesquisa</li>
+            </ol>
+          </nav>
+
+        <h2>Resultados da Pesquisa</h2>
+        <p class="text.text-white"><small>Considerando as matérias em tramitação não orçamentárias nem relacionadas a Concessões, desconsiderando Medidas Provisórias e Requerimentos.</small></p>
+                
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            {% if resultados_pesquisa %}
+            {% for resultado in resultados_pesquisa %}
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <a href="{{ url_for('pagina_detalhes_materias', id=senador['CodigoParlamentar'], codigo_materia = resultado['CodigoMateria']) }}" class="btn btn-primary">
+                                    <h5 class="card-title">{{ resultado['Identificacao'] }}</h5></a>
+                                <!-- Truncate a Ementa para, por exemplo, 100 caracteres -->
+                                <p class="card-text">{{ resultado['Ementa'][:200] }}{{ '...' if resultado['Ementa']|length > 200 else '' }}</p>
+                                {% if resultado['justificativa_prioridade'] is not none %}
+                                <div class="p-1 mb-2 bg-info text-white"><strong>Oportunidade: </strong>{{ resultado['justificativa_prioridade'] }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+            <p>Nenhum resultado encontrado.</p>
+            {% endif %}
+        </div>
+        
+        
+        
+        
+        
+        
+        
+        <!-- Incluir Rodapé -->
+        {% include 'footer.html' %}
+
+    {{ bootstrap.load_js() }}
+</body>
+
+
+</html>
